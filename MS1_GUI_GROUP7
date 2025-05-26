@@ -1,0 +1,151 @@
+package Login_GUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class GUI {
+
+    // Declare the frame to be accessible in other methods
+    private static JFrame frame;
+
+    public static void main(String[] args) {
+        
+        // Create main panel and frame
+        JPanel panel = new JPanel();
+        frame = new JFrame(); // Initialize the frame
+        frame.setSize(300, 400); // Frame size
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // To close the operation
+        frame.add(panel);
+        
+        panel.setLayout(null);
+        
+        // Adding title label for the Payroll System
+        JLabel titleLabel = new JLabel("MotorPH Payroll System", SwingConstants.CENTER);
+        titleLabel.setBounds(0, 70, 300, 30); // Position and size
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        panel.add(titleLabel);
+        
+        // JLabel for Username
+        JLabel userlabel = new JLabel("Username"); 
+        userlabel.setBounds(20, 160, 80, 25);
+        panel.add(userlabel);
+        
+        JTextField userText = new JTextField(20);
+        userText.setBounds(100, 160, 165, 25);
+        panel.add(userText);
+        
+        // JLabel for Password
+        JLabel passlabel = new JLabel("Password"); 
+        passlabel.setBounds(20, 190, 80, 25);
+        panel.add(passlabel);
+        
+        JPasswordField passwordText = new JPasswordField();
+        passwordText.setBounds(100, 190, 165, 25);
+        panel.add(passwordText);
+        
+        // Add radio buttons for login type
+        JRadioButton adminButton = new JRadioButton("Admin Login");
+        adminButton.setBounds(20, 220, 120, 25);
+        adminButton.setSelected(true); // Set Admin as the default selection
+        panel.add(adminButton);
+        
+        JRadioButton userButton = new JRadioButton("User Login");
+        userButton.setBounds(150, 220, 120, 25);
+        panel.add(userButton);
+        
+        // Group the radio buttons
+        ButtonGroup group = new ButtonGroup();
+        group.add(adminButton);
+        group.add(userButton);
+        
+        // Add Login button
+        JButton loginButton = new JButton("Login");
+        loginButton.setBounds(100, 260, 80, 25); 
+        panel.add(loginButton);
+        
+        // Add Clear button
+        JButton clearButton = new JButton("Clear");
+        clearButton.setBounds(185, 260, 80, 25); 
+        panel.add(clearButton);
+        
+        // Action listeners for buttons
+        loginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String username = userText.getText();
+                String password = new String(passwordText.getPassword());
+                
+                // Determine which radio button is selected
+                if (adminButton.isSelected()) {
+                    // Check Admin credentials
+                    if (username.equals("admin") && password.equals("admin")) {
+                        JOptionPane.showMessageDialog(frame, "Admin Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        frame.setVisible(false); // Hide main frame
+                        createNewForm("Admin"); // Open new form
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid Admin credentials", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else if (userButton.isSelected()) {
+                    // Check User credentials
+                    if (username.equals("user") && password.equals("user")) {
+                        JOptionPane.showMessageDialog(frame, "User Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        frame.setVisible(false); // Hide main frame
+                        createNewForm("User"); // Open new form
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid User credentials", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                userText.setText(""); // Clear username field
+                passwordText.setText(""); // Clear password field
+                adminButton.setSelected(true); // Reset to Admin by default
+            }
+        });
+
+        // Center the frame and make it visible
+        frame.setLocationRelativeTo(null); 
+        frame.setVisible(true); 
+    }
+
+    // Method to create a new form based on user type
+    private static void createNewForm(String userType) {
+        JFrame newFrame = new JFrame(userType + " Form");
+        newFrame.setSize(700, 500); // Size of new form
+        newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close this new form
+        newFrame.setLocationRelativeTo(null); // Center the new frame
+        newFrame.setLayout(null); // Set layout to null for custom positioning
+        
+        // Dynamic welcome message
+        JLabel welcomeLabel = new JLabel("Welcome " + userType + "!", SwingConstants.CENTER);
+        welcomeLabel.setBounds(0, 20, 700, 30); // Adjust position and size
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        newFrame.add(welcomeLabel);
+        
+        // Add the new centered label for limited functionality
+        JLabel functionalityLabel = new JLabel("During this time, you may experience limited functionality.", SwingConstants.CENTER);
+        functionalityLabel.setBounds(0, 100, 700, 30); // Adjust position and size
+        functionalityLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        newFrame.add(functionalityLabel);
+
+        // Back to login button (shortened)
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(600, 20, 70, 25); // Position it in the upper right corner
+        
+        newFrame.add(backButton);
+        
+        // Action listener for the back button
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newFrame.dispose(); // Close the new form
+                frame.setVisible(true); // Show the main login frame again
+            }
+        });
+        
+        newFrame.setVisible(true); // Display the new form
+    }
+}
